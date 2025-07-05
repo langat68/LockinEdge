@@ -1,0 +1,126 @@
+.navbar {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e7e5e4;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  .navbar-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+
+    @media (min-width: 640px) {
+      padding: 0 1.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      padding: 0 2rem;
+    }
+  }
+
+  .navbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+  }
+
+  .navbar-left {
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1c1917;
+
+      .logo-icon {
+        stroke: #059669;
+        width: 28px;
+        height: 28px;
+      }
+
+      span {
+        color: #059669;
+      }
+    }
+  }
+
+  .navbar-links {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: flex;
+      gap: 2rem;
+      margin-left: 2.5rem;
+
+      a {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: #57534e;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: color 0.2s ease-in-out;
+
+        .link-icon {
+          stroke: #059669;
+          width: 18px;
+          height: 18px;
+        }
+
+        &:hover {
+          color: #1c1917;
+        }
+      }
+    }
+  }
+
+  .navbar-actions {
+    display: flex;
+    gap: 1rem;
+
+    .sign-in-btn {
+      display: none;
+
+      @media (min-width: 640px) {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        border: 1px solid #d6d3d1;
+        color: #57534e;
+        background: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+
+        .btn-icon {
+          width: 16px;
+          height: 16px;
+        }
+
+        &:hover {
+          background-color: #fafafa;
+        }
+      }
+    }
+
+    .get-started-btn {
+      background-color: #059669;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #047857;
+      }
+    }
+  }
+}

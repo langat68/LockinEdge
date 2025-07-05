@@ -1,0 +1,146 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+
+  .hero-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 5rem 1rem 6rem;
+
+    @media (min-width: 640px) {
+      padding: 5rem 1.5rem 6rem;
+    }
+
+    @media (min-width: 1024px) {
+      padding: 5rem 2rem 6rem;
+    }
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1c1917;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+
+    @media (min-width: 768px) {
+      font-size: 3.75rem;
+    }
+
+    span {
+      color: #059669;
+    }
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: #57534e;
+    margin-bottom: 2rem;
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+
+    @media (min-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3rem;
+
+    @media (min-width: 640px) {
+      flex-direction: row;
+    }
+
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #059669;
+      color: #fff;
+      font-size: 1.125rem;
+      font-weight: 600;
+      padding: 1rem 2rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #047857;
+      }
+
+      .icon-left,
+      .icon-right {
+        width: 20px;
+        height: 20px;
+      }
+
+      .icon-right {
+        transition: transform 0.2s ease-in-out;
+      }
+
+      &:hover .icon-right {
+        transform: translateX(4px);
+      }
+    }
+
+    .try-btn {
+      background: none;
+      border: 1px solid #d6d3d1;
+      color: #57534e;
+      font-size: 1.125rem;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #fafafa;
+      }
+    }
+  }
+
+  .hero-note {
+    font-size: 0.875rem;
+    color: #a8a29e;
+    margin-bottom: 2rem;
+  }
+
+  .hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    .decor {
+      position: absolute;
+      width: 24rem;
+      height: 24rem;
+      border-radius: 50%;
+      filter: blur(64px);
+      opacity: 0.2;
+
+      &.decor-green {
+        background-color: #d1fae5;
+        top: 5rem;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      &.decor-yellow {
+        background-color: #fef3c7;
+        top: 10rem;
+        right: 5rem;
+      }
+    }
+  }
+}
