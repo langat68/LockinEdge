@@ -9,7 +9,7 @@ const Navbar = () => {
           <div className="navbar-left">
             <h1 className="navbar-logo">
               <Camera className="logo-icon" />
-              Lockin<span>Edge</span>
+              <span>LockinEdge</span>
             </h1>
           </div>
 

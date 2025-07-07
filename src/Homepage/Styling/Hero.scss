@@ -6,6 +6,7 @@
     max-width: 1280px;
     margin: 0 auto;
     padding: 5rem 1rem 6rem;
+    background: linear-gradient(to right, #fce7e7, #86db7d);
 
     @media (min-width: 640px) {
       padding: 5rem 1.5rem 6rem;
@@ -96,15 +97,15 @@
 
     .try-btn {
       background: none;
-      border: 1px solid #d6d3d1;
-      color: #57534e;
+      border: 1px solid #af9889;
+      color: #000000;
       font-size: 1.125rem;
       padding: 1rem 2rem;
       cursor: pointer;
       transition: background 0.2s ease-in-out;
 
       &:hover {
-        background-color: #fafafa;
+        background-color: #8aaf85;
       }
     }
   }
