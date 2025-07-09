@@ -1,4 +1,6 @@
-import { Camera, DollarSign, LogIn, PlayCircle } from "lucide-react";
+// Navbar.tsx
+import { Camera, DollarSign, LogIn, PlayCircle, UserPlus } from "lucide-react";
+import { Link } from "react-router-dom";
 import "../Styling/Navbar.scss";
 
 const Navbar = () => {
@@ -23,12 +25,12 @@ const Navbar = () => {
           </div>
 
           <div className="navbar-actions">
-            <button className="sign-in-btn">
-              <LogIn className="btn-icon" /> Sign In
-            </button>
-            <button className="get-started-btn">
-              Get Started
-            </button>
+            <Link to="/login" className="sign-in-btn">
+              <LogIn className="btn-icon" /> Login
+            </Link>
+            <Link to="/register" className="get-started-btn">
+              <UserPlus className="btn-icon" /> Register
+            </Link>
           </div>
         </div>
       </div>
