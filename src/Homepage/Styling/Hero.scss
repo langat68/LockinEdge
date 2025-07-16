@@ -1,147 +1,76 @@
+@import 'variables';
+
 .hero {
-  position: relative;
-  overflow: hidden;
+  background-color: $background-color;
+  padding: $spacing-unit * 8 0;
+  text-align: center;
 
   .hero-container {
-    max-width: 1280px;
+    max-width: 800px;
     margin: 0 auto;
-    padding: 5rem 1rem 6rem;
-    background: linear-gradient(to right, #fce7e7, #86db7d);
-
-    @media (min-width: 640px) {
-      padding: 5rem 1.5rem 6rem;
-    }
-
-    @media (min-width: 1024px) {
-      padding: 5rem 2rem 6rem;
-    }
-  }
-
-  .hero-content {
-    text-align: center;
+    padding: 0 $spacing-unit * 2;
   }
 
   .hero-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1c1917;
-    margin-bottom: 1.5rem;
+    font-size: 3.5rem;
+    font-weight: $heading-font-weight;
+    color: $primary-color;
+    margin-bottom: $spacing-unit * 2;
     line-height: 1.2;
 
-    @media (min-width: 768px) {
-      font-size: 3.75rem;
-    }
-
     span {
-      color: #059669;
+      color: $secondary-color;
     }
   }
 
   .hero-subtitle {
     font-size: 1.25rem;
-    color: #57534e;
-    margin-bottom: 2rem;
-    max-width: 48rem;
-    margin-left: auto;
-    margin-right: auto;
+    color: $text-color;
+    margin-bottom: $spacing-unit * 3;
     line-height: 1.6;
-
-    @media (min-width: 768px) {
-      font-size: 1.5rem;
-    }
   }
 
   .hero-actions {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
     justify-content: center;
-    align-items: center;
-    margin-bottom: 3rem;
+    gap: $spacing-unit * 2;
 
-    @media (min-width: 640px) {
-      flex-direction: row;
+    .upload-btn,
+    .try-btn {
+      padding: $spacing-unit * 1.5 $spacing-unit * 3;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-unit;
     }
 
     .upload-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background-color: #059669;
+      background-color: $secondary-color;
       color: #fff;
-      font-size: 1.125rem;
-      font-weight: 600;
-      padding: 1rem 2rem;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s ease-in-out;
 
       &:hover {
-        background-color: #047857;
-      }
-
-      .icon-left,
-      .icon-right {
-        width: 20px;
-        height: 20px;
-      }
-
-      .icon-right {
-        transition: transform 0.2s ease-in-out;
-      }
-
-      &:hover .icon-right {
-        transform: translateX(4px);
+        background-color: darken($secondary-color, 10%);
+        transform: translateY(-2px);
       }
     }
 
     .try-btn {
-      background: none;
-      border: 1px solid #af9889;
-      color: #000000;
-      font-size: 1.125rem;
-      padding: 1rem 2rem;
-      cursor: pointer;
-      transition: background 0.2s ease-in-out;
+      background-color: transparent;
+      color: $secondary-color;
+      border: 2px solid $secondary-color;
 
       &:hover {
-        background-color: #8aaf85;
+        background-color: $secondary-color;
+        color: #fff;
       }
     }
   }
 
   .hero-note {
-    font-size: 0.875rem;
-    color: #a8a29e;
-    margin-bottom: 2rem;
-  }
-
-  .hero-background {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-
-    .decor {
-      position: absolute;
-      width: 24rem;
-      height: 24rem;
-      border-radius: 50%;
-      filter: blur(64px);
-      opacity: 0.2;
-
-      &.decor-green {
-        background-color: #d1fae5;
-        top: 5rem;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      &.decor-yellow {
-        background-color: #fef3c7;
-        top: 10rem;
-        right: 5rem;
-      }
-    }
+    margin-top: $spacing-unit * 2;
+    color: $dark-gray;
   }
 }

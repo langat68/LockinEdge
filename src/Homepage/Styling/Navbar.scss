@@ -1,7 +1,11 @@
+
+@import 'variables';
+
+
 .navbar {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 0.75rem 1.5rem;
+  background-color: "radial-gradient(125% 125% at 50% 10%, #000000 40%, #0d1a36 100%)";
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: $spacing-unit * 1.5 $spacing-unit * 2;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -20,71 +24,93 @@
       .navbar-logo {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        font-size: 1.25rem;
-        font-weight: bold;
-        color: #333;
+        gap: $spacing-unit * 0.5;
+        font-size: 1.5rem;
+        font-weight: $heading-font-weight;
+        color: $primary-color;
+        text-decoration: none;
 
         .logo-icon {
-          color: #4caf50;
+          color: $secondary-color;
         }
       }
     }
 
     .navbar-links {
       display: flex;
-      gap: 1.25rem;
+      gap: $spacing-unit * 2;
 
       a {
         display: flex;
         align-items: center;
-        gap: 0.25rem;
+        gap: $spacing-unit * 0.5;
         text-decoration: none;
-        color: #555;
+        color: $text-color;
         font-weight: 500;
+        transition: color 0.3s ease;
 
         &:hover {
-          color: #4caf50;
+          color: $secondary-color;
         }
       }
     }
 
     .navbar-actions {
-      display: flex;
-      gap: 0.5rem;
+      position: relative;
 
-      .sign-in-btn,
       .get-started-btn {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        padding: 0.4rem 0.8rem;
-        border: none;
+        background-color: $secondary-color;
+        color: #fff;
+        padding: $spacing-unit $spacing-unit * 2;
+        border-radius: 8px;
         text-decoration: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 500;
-      }
-
-      .sign-in-btn {
-        background: transparent;
-        color: #4caf50;
-        border: 1px solid #4caf50;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
 
         &:hover {
-          background: #4caf50;
-          color: #fff;
+          background-color: darken($secondary-color, 10%);
         }
       }
 
-      .get-started-btn {
-        background: #4caf50;
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: $secondary-color;
         color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        cursor: pointer;
+      }
 
-        &:hover {
-          background: #43a047;
+      .dropdown-menu {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background-color: #fff;
+        border: 1px solid $light-gray;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: $spacing-unit;
+
+        button {
+          background: none;
+          border: none;
+          color: $text-color;
+          padding: $spacing-unit;
+          width: 100%;
+          text-align: left;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: $light-gray;
+          }
         }
       }
     }
   }
 }
+

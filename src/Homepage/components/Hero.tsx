@@ -1,7 +1,14 @@
 import { Upload, ArrowRight } from "lucide-react";
 import "../Styling/Hero.scss";
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
+  const handleUploadClick = () => {
+    navigate('/upload');
+  };
+
   return (
     <section className="hero">
       <div className="hero-container">
@@ -18,7 +25,7 @@ const HeroSection = () => {
           </p>
 
           <div className="hero-actions">
-            <button className="upload-btn">
+            <button className="upload-btn" onClick={handleUploadClick}>
               <Upload className="icon-left" />
               Upload Resume
               <ArrowRight className="icon-right" />

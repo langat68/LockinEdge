@@ -1,7 +1,14 @@
 import { ArrowRight } from "lucide-react";
 import "../Styling/Action.scss";
+import { useNavigate } from 'react-router-dom';
 
 const CallToAction = () => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/login');
+  };
+
   return (
     <section className="call-to-action">
       <div className="container">
@@ -16,7 +23,7 @@ const CallToAction = () => {
         </p>
 
         <div className="actions">
-          <button className="cta-btn">
+          <button className="cta-btn" onClick={handleGetStarted}>
             Get Started Now
             <ArrowRight className="icon" />
           </button>

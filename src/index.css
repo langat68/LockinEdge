@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #fff;
+  background-color: "radial-gradient(125% 125% at 50% 10%, #000000 40%, #0d1a36 100%)";
   color: #1c1917;
   line-height: 1.5;
 }
