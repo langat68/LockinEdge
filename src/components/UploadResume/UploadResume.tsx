@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../Redux/store';
+import JobRecommendations from './JobRecommendations';
 import './UploadResume.css';
 
 const UploadResume: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [analysis, setAnalysis] = useState<any>(null);
   const [message, setMessage] = useState<string>("");
+  const [resumeId, setResumeId] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<'upload' | 'recommendations'>('upload');
   const { user } = useSelector((state: RootState) => state.auth);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +50,13 @@ const UploadResume: React.FC = () => {
 
         if (data.success) {
           setAnalysis(data.data.analysis);
+          setResumeId(data.data.id); // Store the resume ID
           setMessage("✅ Resume uploaded & analyzed successfully!");
+          
+          // Show success message with recommendation option
+          setTimeout(() => {
+            setMessage("🎯 Great! Now let's find jobs that match your skills!");
+          }, 2000);
         } else {
           setMessage("⚠️ Upload succeeded but no analysis returned.");
         }
@@ -65,73 +74,123 @@ const UploadResume: React.FC = () => {
 
   return (
     <div className="upload-resume-container">
-      <div
-        className="dropzone"
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-      >
-        <p>Drag & drop your resume here</p>
-        <p>or</p>
-        <input type="file" onChange={handleFileChange} accept=".pdf,.docx,.txt" />
+      {/* Tab Navigation */}
+      <div className="tab-navigation">
+        <button 
+          className={activeTab === 'upload' ? 'tab active' : 'tab'}
+          onClick={() => setActiveTab('upload')}
+        >
+          📄 Upload Resume
+        </button>
+        <button 
+          className={activeTab === 'recommendations' ? 'tab active' : 'tab'}
+          onClick={() => setActiveTab('recommendations')}
+          disabled={!resumeId}
+        >
+          🎯 Job Matches
+          {resumeId && <span className="tab-badge">New!</span>}
+        </button>
       </div>
 
-      {file && (
-        <div className="file-preview">
-          <p>📄 Selected file: {file.name}</p>
-          <button onClick={handleSubmit} className="submit-btn">
-            Submit
-          </button>
+      {/* Upload Tab */}
+      {activeTab === 'upload' && (
+        <div className="upload-tab">
+          <div
+            className="dropzone"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
+            <p>Drag & drop your resume here</p>
+            <p>or</p>
+            <input type="file" onChange={handleFileChange} accept=".pdf,.docx,.txt" />
+          </div>
+
+          {file && (
+            <div className="file-preview">
+              <p>📄 Selected file: {file.name}</p>
+              <button onClick={handleSubmit} className="submit-btn">
+                Submit
+              </button>
+            </div>
+          )}
+
+          {message && <p className="message">{message}</p>}
+
+          {analysis && (
+            <div className="analysis-result">
+              <div className="analysis-header">
+                <h3>📝 Analysis Results</h3>
+                <button 
+                  onClick={() => setActiveTab('recommendations')}
+                  className="view-jobs-btn"
+                >
+                  🎯 View Job Matches →
+                </button>
+              </div>
+
+              <div className="analysis-content">
+                <div className="analysis-summary">
+                  <h4>Summary</h4>
+                  <p>{analysis.summary}</p>
+                </div>
+
+                <div className="analysis-grid">
+                  <div className="analysis-item">
+                    <h4>Experience</h4>
+                    <p className="experience-years">{analysis.experience} years</p>
+                  </div>
+
+                  <div className="analysis-item">
+                    <h4>Skills</h4>
+                    <div className="skills-grid">
+                      {analysis.skills?.map((skill: string, i: number) => (
+                        <span key={i} className="skill-chip">{skill}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="analysis-item">
+                    <h4>Strengths</h4>
+                    <ul className="strengths-list">
+                      {analysis.strengths?.map((s: string, i: number) => (
+                        <li key={i}>✅ {s}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="analysis-item">
+                    <h4>Areas for Improvement</h4>
+                    <ul className="improvements-list">
+                      {analysis.improvements?.map((imp: string, i: number) => (
+                        <li key={i}>💡 {imp}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="analysis-item">
+                    <h4>Education</h4>
+                    <div className="education-list">
+                      {analysis.education?.map(
+                        (edu: { degree: string; institution: string; year: number }, i: number) => (
+                          <div key={i} className="education-item">
+                            <span className="degree">{edu.degree}</span>
+                            <span className="institution">{edu.institution}</span>
+                            <span className="year">({edu.year})</span>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
-      {message && <p style={{ marginTop: "1rem" }}>{message}</p>}
-
-      {analysis && (
-        <div className="analysis-result" style={{ marginTop: "2rem" }}>
-          <h3>📝 Analysis Results:</h3>
-          <p><strong>Summary:</strong> {analysis.summary}</p>
-          <p><strong>Experience:</strong> {analysis.experience} years</p>
-
-          <div>
-            <strong>Skills:</strong>
-            <ul>
-              {analysis.skills?.map((skill: string, i: number) => (
-                <li key={i}>{skill}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <strong>Strengths:</strong>
-            <ul>
-              {analysis.strengths?.map((s: string, i: number) => (
-                <li key={i}>{s}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <strong>Improvements:</strong>
-            <ul>
-              {analysis.improvements?.map((imp: string, i: number) => (
-                <li key={i}>{imp}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <strong>Education:</strong>
-            <ul>
-              {analysis.education?.map(
-                (edu: { degree: string; institution: string; year: number }, i: number) => (
-                  <li key={i}>
-                    {edu.degree} at {edu.institution} ({edu.year})
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-        </div>
+      {/* Recommendations Tab */}
+      {activeTab === 'recommendations' && (
+        <JobRecommendations resumeId={resumeId} />
       )}
     </div>
   );
