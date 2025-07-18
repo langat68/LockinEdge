@@ -1,67 +1,78 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setLogin } from './Redux/slices/authSlice';
-import './App.css';
+import React, { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLogin } from "./Redux/slices/authSlice";
+import "./App.css";
 
-import Navbar from './Homepage/components/Navbar';
-import HeroSection from './Homepage/components/Hero';
-import HowItWorks from './Homepage/components/Howitworks';
-import CallToAction from './Homepage/components/Action';
-import Footer from './Homepage/components/Footer';
+import Navbar from "./Homepage/components/Navbar";
+import HeroSection from "./Homepage/components/Hero";
+import HowItWorks from "./Homepage/components/Howitworks";
+import CallToAction from "./Homepage/components/Action";
+import Footer from "./Homepage/components/Footer";
 
-import LoginPage from './Homepage/components/LoginForm';
-import RegisterPage from './Homepage/components/RegisterForm';
-import UploadResume from './components/UploadResume/UploadResume';
-import ResumeDetails from './components/ResumeDetails'
+import LoginPage from "./Homepage/components/LoginForm";
+import RegisterPage from "./Homepage/components/RegisterForm";
+import UploadResume from "./components/UploadResume/UploadResume";
+import ResumeDetails from "./components/ResumeDetails";
+
+// layout for pages with Navbar & Footer
+function MainLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <Navbar />
+      {children}
+      <Footer />
+    </>
+  );
+}
 
 function App() {
-  const location = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      // TODO: replace placeholder user with real decoded token or fetch user info
+    const token = localStorage.getItem("authToken");
+    const user = localStorage.getItem("authUser");
+
+    if (token && user) {
       dispatch(
         setLogin({
           token,
-          user: { email: 'persisted_user@example.com' },
+          user: JSON.parse(user),
         })
       );
     }
   }, [dispatch]);
 
-  // Paths where navbar/footer should NOT appear
-  const isAuthRoute =
-    location.pathname === '/login' || location.pathname === '/register';
-
   return (
-    <>
-      {!isAuthRoute && <Navbar />}
+    <Routes>
+      {/* Home */}
+      <Route
+        path="/"
+        element={
+          <MainLayout>
+            <HeroSection />
+            <HowItWorks />
+            <CallToAction />
+          </MainLayout>
+        }
+      />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <HeroSection />
-              <HowItWorks />
-              <CallToAction />
-            </>
-          }
-        />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/upload" element={<UploadResume />} />
-        <Route path="/resume/:id" element={<ResumeDetails />} />
+      {/* Auth */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
-        {/* fallback route */}
-        <Route path="*" element={<h2 style={{ textAlign: 'center' }}>404 - Page Not Found</h2>} />
-      </Routes>
+      {/* Standalone pages */}
+      <Route path="/upload" element={<UploadResume />} />
+      <Route path="/resume/:id" element={<ResumeDetails />} />
 
-      {!isAuthRoute && <Footer />}
-    </>
+      {/* 404 */}
+      <Route
+        path="*"
+        element={
+          <h2 style={{ textAlign: "center" }}>404 - Page Not Found</h2>
+        }
+      />
+    </Routes>
   );
 }
 

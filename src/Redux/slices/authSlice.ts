@@ -1,11 +1,17 @@
-import { createSlice} from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
+// optionally define a User type
+interface User {
+  email: string;
+  name?: string;
+  id?: string;
+}
 
 interface AuthState {
   isAuthenticated: boolean;
   token: string | null;
-  user: any; // You might want to define a more specific user interface
+  user: User | null;
 }
 
 const initialState: AuthState = {
@@ -15,21 +21,27 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
-    setLogin: (state, action: PayloadAction<{ token: string; user: any }>) => {
+    setLogin: (
+      state,
+      action: PayloadAction<{ token: string; user: User }>
+    ) => {
       state.isAuthenticated = true;
       state.token = action.payload.token;
       state.user = action.payload.user;
-      localStorage.setItem('authToken', action.payload.token);
-      // You might also want to store user data in localStorage if needed
+
+      localStorage.setItem("authToken", action.payload.token);
+      localStorage.setItem("authUser", JSON.stringify(action.payload.user));
     },
     setLogout: (state) => {
       state.isAuthenticated = false;
       state.token = null;
       state.user = null;
-      localStorage.removeItem('authToken');
+
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("authUser");
     },
   },
 });
