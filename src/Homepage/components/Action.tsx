@@ -1,12 +1,25 @@
 import { ArrowRight } from "lucide-react";
 import "../Styling/Action.scss";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const CallToAction = () => {
   const navigate = useNavigate();
+  
+  // Get authentication status from Redux store
+  const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
+  // Alternative: You could also check for token existence
+  // const token = useSelector((state: any) => state.auth.token);
 
   const handleGetStarted = () => {
-    navigate('/login');
+    // Check if user is logged in
+    if (isAuthenticated) {
+      // User is logged in, redirect to upload resume page
+      navigate('/upload');
+    } else {
+      // User is not logged in, redirect to login page
+      navigate('/login');
+    }
   };
 
   return (
@@ -24,7 +37,7 @@ const CallToAction = () => {
 
         <div className="actions">
           <button className="cta-btn" onClick={handleGetStarted}>
-            Get Started Now
+            {isAuthenticated ? 'Upload Resume' : 'Get Started Now'}
             <ArrowRight className="icon" />
           </button>
 

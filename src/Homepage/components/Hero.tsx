@@ -6,10 +6,47 @@ const HeroSection = () => {
   const navigate = useNavigate();
 
   const handleUploadClick = () => {
-    navigate('/upload');
+    // Check if user is authenticated
+    const isAuthenticated = checkAuthStatus();
+    
+    if (isAuthenticated) {
+      navigate('/upload');
+    } else {
+      navigate('/login');
+    }
   };
 
+  // Helper function to check authentication status
+  const checkAuthStatus = () => {
+    // Method 1: Check for JWT token in localStorage
+    const token = localStorage.getItem('authToken') || localStorage.getItem('token');
+    if (token) {
+      // Optional: Add token validation logic here
+      try {
+        // Basic token expiry check if your token includes exp
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const currentTime = Date.now() / 1000;
+        return payload.exp > currentTime;
+      } catch (error) {
+        // If token parsing fails, remove invalid token
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('token');
+        return false;
+      }
+    }
 
+    // Method 2: Check for session cookie (uncomment if using cookies)
+    // const sessionCookie = document.cookie
+    //   .split('; ')
+    //   .find(row => row.startsWith('session='));
+    // return !!sessionCookie;
+
+    // Method 3: Check sessionStorage
+    // const sessionData = sessionStorage.getItem('userSession');
+    // return !!sessionData;
+
+    return false;
+  };
 
   return (
     <section className="hero">

@@ -14,11 +14,32 @@ interface AuthState {
   user: User | null;
 }
 
-const initialState: AuthState = {
-  isAuthenticated: false,
-  token: null,
-  user: null,
+// Function to get initial state from localStorage
+const getInitialState = (): AuthState => {
+  try {
+    const token = localStorage.getItem("authToken");
+    const userStr = localStorage.getItem("authUser");
+    
+    if (token && userStr) {
+      const user = JSON.parse(userStr);
+      return {
+        isAuthenticated: true,
+        token,
+        user,
+      };
+    }
+  } catch (error) {
+    console.error("Error loading auth state from localStorage:", error);
+  }
+  
+  return {
+    isAuthenticated: false,
+    token: null,
+    user: null,
+  };
 };
+
+const initialState: AuthState = getInitialState();
 
 const authSlice = createSlice({
   name: "auth",
@@ -43,8 +64,24 @@ const authSlice = createSlice({
       localStorage.removeItem("authToken");
       localStorage.removeItem("authUser");
     },
+    // Optional: Action to restore auth state manually if needed
+    restoreAuth: (state) => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const userStr = localStorage.getItem("authUser");
+        
+        if (token && userStr) {
+          const user = JSON.parse(userStr);
+          state.isAuthenticated = true;
+          state.token = token;
+          state.user = user;
+        }
+      } catch (error) {
+        console.error("Error restoring auth state:", error);
+      }
+    },
   },
 });
 
-export const { setLogin, setLogout } = authSlice.actions;
+export const { setLogin, setLogout, restoreAuth } = authSlice.actions;
 export default authSlice.reducer;

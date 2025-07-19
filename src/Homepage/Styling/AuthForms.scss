@@ -1,55 +1,521 @@
-.auth-form {
-  max-width: 400px;
-  margin: 3rem auto;
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+// Color palette
+$primary-color: #4caf50;
+$primary-hover: #43a047;
+$primary-light: #e8f5e8;
+$error-color: #e74c3c;
+$error-light: #fdf2f2;
+$success-color: #27ae60;
+$success-light: #d5f4e6;
+$text-color: #333;
+$text-secondary: #666;
+$border-color: #e1e5e9;
+$background-color: #f8fafc;
+$white: #ffffff;
+$shadow-light: rgba(0, 0, 0, 0.1);
+$shadow-medium: rgba(0, 0, 0, 0.15);
 
-  h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #333;
+// Animations
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Main container - provides full-page centering and gradient background
+.auth-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $background-color 0%, #e3f2fd 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  
+  .auth-form {
+    // Reset margins when inside container
+    margin: 0;
+  }
+}
+
+// Main form styles
+.auth-form {
+  max-width: 420px;
+  width: 100%;
+  background: $white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px $shadow-light;
+  animation: slideIn 0.6s ease-out;
+  position: relative;
+  
+  // Self-centering styles when not inside .auth-container
+  margin: 2rem auto;
+  
+  // If the form takes up the full viewport height context
+  @supports (min-height: 100vh) {
+    margin-top: max(2rem, calc(50vh - 250px));
+    margin-bottom: 2rem;
+  }
+  
+  // Subtle top accent
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, $primary-color, $primary-hover);
+    border-radius: 16px 16px 0 0;
   }
 
+  // Form title (h2)
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-color;
+    margin: 0 0 2rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  // Form groups
   .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
 
     label {
       display: block;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
       font-weight: 600;
-      color: #444;
+      color: $text-color;
+      font-size: 0.9rem;
+      letter-spacing: 0.01em;
     }
 
-    input {
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      input {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 2px solid $border-color;
+        border-radius: 10px;
+        font-size: 1rem;
+        background: $white;
+        transition: all 0.2s ease;
+        font-weight: 400;
+        box-sizing: border-box;
+
+        &::placeholder {
+          color: #a0a0a0;
+          font-weight: 400;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        &:hover:not(:focus):not(:disabled) {
+          border-color: darken($border-color, 10%);
+        }
+
+        &.error {
+          border-color: $error-color;
+          animation: shake 0.4s ease-in-out;
+          
+          &:focus {
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+          }
+        }
+
+        &:disabled {
+          background: #f5f5f5;
+          color: $text-secondary;
+          cursor: not-allowed;
+          opacity: 0.7;
+        }
+
+        // Invalid state styling
+        &:invalid {
+          border-color: $error-color;
+        }
+
+        // Password field with toggle
+        &[type="password"],
+        &[type="text"].password-input {
+          padding-right: 2.75rem;
+        }
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        color: $text-secondary;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        z-index: 2;
+
+        &:hover:not(:disabled) {
+          color: $primary-color;
+          background: rgba(76, 175, 80, 0.1);
+        }
+
+        &:focus {
+          outline: 2px solid $primary-color;
+          outline-offset: 1px;
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+        }
+
+        // Icon styling
+        svg {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+
+    // For inputs without wrapper (backwards compatibility)
+    > input:not(.input-wrapper input) {
       width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 0.875rem 1rem;
+      border: 2px solid $border-color;
+      border-radius: 10px;
       font-size: 1rem;
+      background: $white;
+      transition: all 0.2s ease;
+      font-weight: 400;
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: #a0a0a0;
+        font-weight: 400;
+      }
 
       &:focus {
         outline: none;
-        border-color: #4caf50;
-        box-shadow: 0 0 3px #4caf50;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+      }
+
+      &:hover:not(:focus):not(:disabled) {
+        border-color: darken($border-color, 10%);
+      }
+
+      &.error {
+        border-color: $error-color;
+        animation: shake 0.4s ease-in-out;
+        
+        &:focus {
+          box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+      }
+
+      &:disabled {
+        background: #f5f5f5;
+        color: $text-secondary;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      &:invalid {
+        border-color: $error-color;
+      }
+    }
+
+    .field-error {
+      display: block;
+      color: $error-color;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      animation: fadeIn 0.2s ease-in;
+      font-weight: 500;
+    }
+  }
+
+  // Messages (for success/error feedback)
+  .message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.3s ease-in;
+
+    &.error-message {
+      background: $error-light;
+      color: $error-color;
+      border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+
+    &.success-message {
+      background: $success-light;
+      color: $success-color;
+      border: 1px solid rgba(39, 174, 96, 0.2);
+    }
+  }
+
+  // Submit button
+  .submit-btn {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, $primary-color 0%, $primary-hover 100%);
+    color: $white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+
+      &::before {
+        left: 100%;
+      }
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    }
+
+    &:focus {
+      outline: 3px solid rgba(76, 175, 80, 0.3);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      background: linear-gradient(135deg, #cccccc 0%, #bbbbbb 100%);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 2px 4px $shadow-light;
+
+      &:hover {
+        transform: none;
+        box-shadow: 0 2px 4px $shadow-light;
+      }
+    }
+
+    .loading-spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid $white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  // Switch form text and link
+  .switch-form {
+    text-align: center;
+    margin: 0;
+    color: $text-secondary;
+    font-size: 0.95rem;
+    
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 0.25rem;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $primary-hover;
+        text-decoration: underline;
+      }
+
+      &:focus {
+        outline: 2px solid $primary-color;
+        outline-offset: 2px;
+        border-radius: 2px;
       }
     }
   }
 
-  .submit-btn {
-    width: 100%;
-    padding: 0.75rem;
-    background: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  // Additional form options (for future use - remember me, forgot password, etc.)
+  .form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
 
-    &:hover {
-      background: #43a047;
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: $text-secondary;
+      font-weight: 500;
+      user-select: none;
+
+      input[type="checkbox"] {
+        display: none;
+      }
+
+      .checkmark {
+        width: 18px;
+        height: 18px;
+        border: 2px solid $border-color;
+        border-radius: 4px;
+        margin-right: 0.5rem;
+        position: relative;
+        transition: all 0.2s ease;
+
+        &::after {
+          content: '✓';
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%) scale(0);
+          color: $white;
+          font-size: 12px;
+          font-weight: bold;
+          transition: transform 0.2s ease;
+        }
+      }
+
+      input[type="checkbox"]:checked + .checkmark {
+        background: $primary-color;
+        border-color: $primary-color;
+
+        &::after {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      &:hover .checkmark {
+        border-color: $primary-color;
+      }
     }
+
+    .forgot-link {
+      color: $primary-color;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $primary-hover;
+        text-decoration: underline;
+      }
+
+      &:focus {
+        outline: 2px solid $primary-color;
+        outline-offset: 2px;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 0.5rem;
+  }
+
+  .auth-form {
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+
+    h2 {
+      font-size: 1.75rem;
+    }
+
+    .form-options {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .auth-form {
+    border: 2px solid $text-color;
+
+    .form-group input {
+      border-width: 2px;
+    }
+
+    .submit-btn {
+      border: 2px solid $text-color;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
