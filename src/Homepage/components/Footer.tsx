@@ -20,11 +20,11 @@ const Footer = () => {
               </div>
               <div className="contact-item">
                 <Phone size={16} />
-                <span>+1 (555) 123-4567</span>
+                <span>+254 123-4567</span>
               </div>
               <div className="contact-item">
                 <MapPin size={16} />
-                <span>San Francisco, CA</span>
+                <span>Kutus</span>
               </div>
             </div>
           </div>
