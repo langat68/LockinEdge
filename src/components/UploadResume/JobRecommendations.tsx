@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../Redux/store';
+
 import './jobs.css';
 
 interface JobRecommendation {
@@ -27,7 +26,7 @@ const JobRecommendations: React.FC<JobRecommendationsProps> = ({ resumeId }) => 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
   const [filter, setFilter] = useState<'all' | 'high' | 'medium' | 'low'>('all');
-  const { user } = useSelector((state: RootState) => state.auth);
+ 
 
   const fetchRecommendations = async () => {
     if (!resumeId) return;

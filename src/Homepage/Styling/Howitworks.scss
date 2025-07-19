@@ -5,7 +5,7 @@ $secondary-green: #1ca527;    // Deeper emerald
 $accent-green: #34d399;       // Light emerald
 $sage-green: #6ee7b7;         // Soft sage
 $mint-green: #a7f3d0;         // Very light mint
-
+@use "sass:math";
 $charcoal: #111111;           // Deep charcoal
 $slate: #313336;              // Medium slate
 $soft-black: #111827;         // Soft black
@@ -304,7 +304,8 @@ $breakpoint-xl: 1280px;
           content: '';
           position: absolute;
           top: 50%;
-          right: -#{$spacing-2xl / 2};
+          right: -#{math.div($spacing-2xl, 2)};
+
           width: $spacing-2xl;
           height: 2px;
           background: linear-gradient(90deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.1));

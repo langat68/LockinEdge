@@ -9,10 +9,7 @@ const HeroSection = () => {
     navigate('/upload');
   };
 
-  const handleTryFreeClick = () => {
-    // Add try free functionality here
-    console.log('Try It Free clicked');
-  };
+
 
   return (
     <section className="hero">
