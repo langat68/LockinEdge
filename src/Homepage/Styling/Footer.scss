@@ -1,46 +1,162 @@
-@import 'variables';
+// Import variables to match your design system
+$primary-green: #10b943;      // Emerald green
+$secondary-green: #1ca527;    // Deeper emerald
+$accent-green: #34d399;       // Light emerald
+$sage-green: #6ee7b7;         // Soft sage
+$mint-green: #a7f3d0;         // Very light mint
+
+$charcoal: #111111;           // Deep charcoal
+$slate: #313336;              // Medium slate
+$soft-black: #111827;         // Soft black
+$warm-gray: #0c0c0c;          // Warm gray
+$light-gray: #d1d5db;         // Light gray
+
+$pure-white: #ffffff;         // Pure white
+$off-white: #fafafa;          // Off white
+$cream: #f9fafb;             // Cream white
+$light-cream: #f3f4f6;        // Light cream
+
+// Typography
+$font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Spacing
+$spacing-sm: 0.75rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 3rem;
+
+// Transitions
+$transition-medium: 0.3s ease-in-out;
 
 .footer {
-  background-color: $light-gray;
-  padding: $spacing-unit * 4 $spacing-unit * 2;
-  color: $text-color;
+  background: linear-gradient(135deg, $soft-black 0%, $charcoal 100%);
+  color: $light-gray;
+  padding: $spacing-2xl 0 $spacing-lg;
+  margin-top: auto;
+  position: relative;
+  
+  // Subtle top accent line to match your design
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, $primary-green 0%, $accent-green 50%, $primary-green 100%);
+    opacity: 0.6;
+  }
+
+  // Add subtle background pattern like your CTA section
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 25% 75%, rgba(16, 185, 67, 0.02) 0%, transparent 50%),
+                      radial-gradient(circle at 75% 25%, rgba(16, 185, 67, 0.01) 0%, transparent 50%);
+    pointer-events: none;
+  }
 
   .footer-container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
+    padding: 0 $spacing-lg;
+    position: relative;
+    z-index: 1;
   }
 
   .footer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: $spacing-unit * 4;
-    margin-bottom: $spacing-unit * 4;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: $spacing-2xl;
+    margin-bottom: $spacing-xl;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: $spacing-xl;
+    }
   }
 
   .footer-about {
     h3 {
-      font-size: 1.5rem;
-      font-weight: $heading-font-weight;
-      color: $primary-color;
-      margin-bottom: $spacing-unit;
+      font-size: 1.75rem;
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-md;
+      color: $pure-white;
+      font-family: $font-primary;
 
       span {
-        color: $secondary-color;
+        background: linear-gradient(135deg, $primary-green, $secondary-green);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
     }
 
     p {
+      color: $light-gray;
       line-height: 1.6;
+      margin-bottom: $spacing-lg;
+      font-size: 0.95rem;
+      font-family: $font-primary;
+      opacity: 0.9;
+    }
+
+    .contact-info {
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        margin-bottom: $spacing-sm;
+        color: $light-gray;
+        font-size: 0.9rem;
+        font-family: $font-primary;
+        transition: all $transition-medium;
+        opacity: 0.8;
+
+        svg {
+          color: $primary-green;
+          flex-shrink: 0;
+          opacity: 0.9;
+        }
+
+        &:hover {
+          color: $pure-white;
+          opacity: 1;
+          transform: translateX(2px);
+        }
+      }
     }
   }
 
-  .footer-links,
-  .footer-connect {
+  .footer-links {
     h4 {
-      font-size: 1.2rem;
-      font-weight: $heading-font-weight;
-      color: $primary-color;
-      margin-bottom: $spacing-unit * 1.5;
+      color: $pure-white;
+      font-size: 1.1rem;
+      font-weight: $font-weight-semibold;
+      margin-bottom: $spacing-md;
+      font-family: $font-primary;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 30px;
+        height: 2px;
+        background: linear-gradient(135deg, $primary-green, $accent-green);
+        border-radius: 1px;
+        opacity: 0.7;
+      }
     }
 
     ul {
@@ -48,40 +164,134 @@
       padding: 0;
 
       li {
-        margin-bottom: $spacing-unit;
+        margin-bottom: $spacing-sm;
 
         a {
-          color: $text-color;
+          color: $light-gray;
           text-decoration: none;
-          transition: color 0.3s ease;
+          font-size: 0.95rem;
+          font-family: $font-primary;
+          transition: all $transition-medium;
+          position: relative;
+          opacity: 0.8;
 
           &:hover {
-            color: $secondary-color;
+            color: $accent-green;
+            opacity: 1;
+            transform: translateX(3px);
           }
         }
+      }
+    }
+  }
+
+  .footer-connect {
+    h4 {
+      color: $pure-white;
+      font-size: 1.1rem;
+      font-weight: $font-weight-semibold;
+      margin-bottom: $spacing-md;
+      font-family: $font-primary;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 30px;
+        height: 2px;
+        background: linear-gradient(135deg, $primary-green, $accent-green);
+        border-radius: 1px;
+        opacity: 0.7;
       }
     }
 
     .social-links {
       display: flex;
-      gap: $spacing-unit * 1.5;
+      flex-direction: column;
+      gap: $spacing-sm;
 
-      a {
-        color: $text-color;
-        font-size: 1.5rem;
-        transition: color 0.3s ease;
+      .social-link {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        color: $light-gray;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-family: $font-primary;
+        padding: 0.4rem 0;
+        border-radius: 6px;
+        transition: all $transition-medium;
+        opacity: 0.8;
+
+        svg {
+          color: $primary-green;
+          transition: all $transition-medium;
+          opacity: 0.9;
+        }
 
         &:hover {
-          color: $secondary-color;
+          color: $pure-white;
+          opacity: 1;
+          transform: translateX(3px);
+
+          svg {
+            color: $accent-green;
+            transform: scale(1.05);
+            opacity: 1;
+          }
         }
       }
     }
   }
 
   .footer-bottom {
-    border-top: 1px solid $dark-gray;
-    padding-top: $spacing-unit * 2;
+    border-top: 1px solid $warm-gray;
+    padding-top: 1.5rem;
     text-align: center;
-    color: $dark-gray;
+
+    p {
+      color: $light-gray;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 992px) {
+  .footer {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      
+      .footer-about {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .footer {
+    padding: 2rem 0 1rem;
+
+    .footer-container {
+      padding: 0 1rem;
+    }
+
+    .footer-connect {
+      .social-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        .social-link {
+          flex: 1;
+          min-width: 120px;
+          justify-content: center;
+        }
+      }
+    }
   }
 }

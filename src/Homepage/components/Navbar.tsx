@@ -1,4 +1,4 @@
-import { UserCircle, BookOpen, Sparkles, HeadphonesIcon, Lock } from "lucide-react";
+import { BookOpen, Sparkles, HeadphonesIcon, Dumbbell } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../Redux/store";
@@ -12,7 +12,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  const getInitials = (email: string) => {
+  const getInitials = (email: string | undefined) => {
     if (!email) return "";
     return email.substring(0, 2).toUpperCase();
   };
@@ -20,6 +20,7 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(setLogout());
     navigate("/");
+    setDropdownOpen(false);
   };
 
   return (
@@ -29,8 +30,8 @@ const Navbar = () => {
           {/* Left: Logo */}
           <div className="navbar-left">
             <Link to="/" className="navbar-logo">
-              <Lock className="logo-icon" />
-              <span>lock·in</span>
+              <Dumbbell className="logo-icon" />
+              <span>lockin</span>
             </Link>
           </div>
 
@@ -47,28 +48,35 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Right: Avatar / Icon */}
+          {/* Right: Get Started Button or User Avatar */}
           <div className="navbar-actions">
-            <div
-              className="user-avatar"
-              onClick={() => setDropdownOpen(!isDropdownOpen)}
-            >
-              {isAuthenticated ? (
-                getInitials(user?.email)
-              ) : (
-                <UserCircle className="link-icon" />
-              )}
-            </div>
-            {isDropdownOpen && (
-              <div className="dropdown-menu">
-                {isAuthenticated ? (
-                  <button onClick={handleLogout}>Logout</button>
-                ) : (
-                  <Link to="/login" onClick={() => setDropdownOpen(false)}>
-                    Sign In
-                  </Link>
+            {isAuthenticated ? (
+              <div className="user-menu">
+                <div
+                  className="user-avatar"
+                  onClick={() => setDropdownOpen(!isDropdownOpen)}
+                >
+                  {getInitials(user?.email)}
+                </div>
+                {isDropdownOpen && (
+                  <div className="dropdown-menu">
+                    <div className="dropdown-item user-info">
+                      <span className="user-email">{user?.email}</span>
+                    </div>
+                    <div className="dropdown-divider"></div>
+                    <button 
+                      className="dropdown-item logout-btn" 
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+                  </div>
                 )}
               </div>
+            ) : (
+              <Link to="/login" className="get-started-btn">
+                Get Started
+              </Link>
             )}
           </div>
         </div>

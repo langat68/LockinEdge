@@ -1,89 +1,490 @@
-@import 'variables';
+// Import variables from your main stylesheet or define them here
+// Color Variables - Consistent with Hero Section
+$primary-green: #10b943;      // Emerald green
+$secondary-green: #1ca527;    // Deeper emerald
+$accent-green: #34d399;       // Light emerald
+$sage-green: #6ee7b7;         // Soft sage
+$mint-green: #a7f3d0;         // Very light mint
 
+$charcoal: #111111;           // Deep charcoal
+$slate: #313336;              // Medium slate
+$soft-black: #111827;         // Soft black
+$warm-gray: #0c0c0c;          // Warm gray
+$light-gray: #d1d5db;         // Light gray
+
+$pure-white: #ffffff;         // Pure white
+$off-white: #fafafa;          // Off white
+$cream: #f9fafb;              // Cream white
+$light-cream: #f3f4f6;        // Light cream
+
+// Typography
+$font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Spacing
+$spacing-xs: 0.5rem;   // 8px
+$spacing-sm: 0.75rem;  // 12px
+$spacing-md: 1rem;     // 16px
+$spacing-lg: 1.5rem;   // 24px
+$spacing-xl: 2rem;     // 32px
+$spacing-2xl: 3rem;    // 48px
+$spacing-3xl: 4rem;    // 64px
+
+// Border Radius
+$radius-sm: 0.375rem;  // 6px
+$radius-md: 0.5rem;    // 8px
+$radius-lg: 0.75rem;   // 12px
+$radius-xl: 1rem;      // 16px
+
+// Shadows
+$shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-green: 0 4px 14px 0 rgba(16, 185, 129, 0.2);
+
+// Transitions
+$transition-fast: 0.15s ease-in-out;
+$transition-medium: 0.3s ease-in-out;
+$transition-slow: 0.5s ease-in-out;
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+// How It Works Section
 .how-it-works {
-  padding: $spacing-unit * 6 $spacing-unit * 2;
-  background-color: #fff;
+  padding: $spacing-3xl 0;
+  background: $pure-white;
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-2xl 0;
+  }
 
   .container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
+    padding: 0 $spacing-lg;
+    position: relative;
+    z-index: 1;
+
+    @media (max-width: $breakpoint-md) {
+      padding: 0 $spacing-md;
+    }
   }
 
   .section-header {
     text-align: center;
-    margin-bottom: $spacing-unit * 4;
+    margin-bottom: $spacing-3xl;
+
+    @media (max-width: $breakpoint-md) {
+      margin-bottom: $spacing-2xl;
+    }
 
     h2 {
-      font-size: 2.5rem;
-      font-weight: $heading-font-weight;
-      color: $primary-color;
-      margin-bottom: $spacing-unit;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: $font-weight-bold;
+      color: $charcoal;
+      line-height: 1.2;
+      font-family: $font-primary;
+      margin: 0 0 $spacing-md 0;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, $primary-green, $accent-green);
+        border-radius: 2px;
+      }
+
+      @media (max-width: $breakpoint-md) {
+        font-size: 2rem;
+      }
     }
 
     p {
       font-size: 1.25rem;
-      color: $text-color;
+      color: $warm-gray;
+      line-height: 1.6;
+      font-weight: $font-weight-regular;
+      font-family: $font-primary;
+      margin: 0;
       max-width: 600px;
       margin: 0 auto;
+
+      @media (max-width: $breakpoint-md) {
+        font-size: 1.125rem;
+      }
     }
   }
 
   .steps {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: $spacing-unit * 4;
+    gap: $spacing-2xl;
+    align-items: start;
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: 1fr;
+      gap: $spacing-xl;
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
     .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
-      padding: $spacing-unit * 2;
-      border: 1px solid $light-gray;
-      border-radius: 8px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: $spacing-xl;
+      border-radius: $radius-lg;
+      background: linear-gradient(135deg, $cream 0%, $off-white 100%);
+      border: 1px solid rgba(16, 185, 129, 0.1);
+      transition: all $transition-medium;
+      position: relative;
+      overflow: hidden;
+
+      // Subtle background pattern
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.02) 0%, transparent 50%);
+        pointer-events: none;
+      }
 
       &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        transform: translateY(-8px);
+        box-shadow: $shadow-large;
+        border-color: rgba(16, 185, 129, 0.2);
+
+        .icon-wrapper {
+          transform: scale(1.1);
+          box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .step-number {
+          transform: translateY(-2px);
+        }
       }
 
       .icon-wrapper {
-        display: inline-flex;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, $primary-green, $secondary-green);
+        display: flex;
         align-items: center;
         justify-content: center;
-        width: 70px;
-        height: 70px;
-        background-color: $light-gray;
-        color: $secondary-color;
-        border-radius: 50%;
-        margin-bottom: $spacing-unit * 2;
-        transition: all 0.3s ease;
+        margin-bottom: $spacing-lg;
+        transition: all $transition-medium;
+        box-shadow: $shadow-green;
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          background: linear-gradient(135deg, $accent-green, $sage-green);
+          border-radius: 50%;
+          z-index: -1;
+          opacity: 0;
+          transition: opacity $transition-medium;
+        }
 
         .step-icon {
           width: 32px;
           height: 32px;
+          color: $pure-white;
+          stroke-width: 2;
         }
       }
 
-      &:hover .icon-wrapper {
-        background-color: $secondary-color;
-        color: #fff;
+      &:hover .icon-wrapper::before {
+        opacity: 1;
       }
 
       .step-number {
-        margin-bottom: $spacing-unit;
-        font-weight: 600;
-        color: $dark-gray;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, $mint-green, $sage-green);
+        color: $charcoal;
+        padding: $spacing-xs $spacing-md;
+        border-radius: 50px;
+        font-size: 0.875rem;
+        font-weight: $font-weight-semibold;
+        font-family: $font-primary;
+        margin-bottom: $spacing-md;
+        transition: transform $transition-medium;
+        letter-spacing: 0.025em;
+        min-width: 70px;
+
+        span {
+          white-space: nowrap;
+        }
       }
 
       h3 {
         font-size: 1.5rem;
-        font-weight: $heading-font-weight;
-        color: $primary-color;
-        margin-bottom: $spacing-unit;
+        font-weight: $font-weight-bold;
+        color: $charcoal;
+        font-family: $font-primary;
+        margin: 0 0 $spacing-md 0;
+        position: relative;
+
+        // Subtle gradient text effect on hover
+        transition: all $transition-medium;
+      }
+
+      &:hover h3 {
+        background: linear-gradient(135deg, $primary-green, $secondary-green);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       p {
-        color: $text-color;
+        font-size: 1rem;
+        color: $warm-gray;
         line-height: 1.6;
+        font-weight: $font-weight-regular;
+        font-family: $font-primary;
+        margin: 0;
+        max-width: 280px;
+      }
+
+      @media (max-width: $breakpoint-sm) {
+        padding: $spacing-lg;
+
+        .icon-wrapper {
+          width: 70px;
+          height: 70px;
+
+          .step-icon {
+            width: 28px;
+            height: 28px;
+          }
+        }
+
+        h3 {
+          font-size: 1.25rem;
+        }
+
+        p {
+          font-size: 0.95rem;
+        }
+      }
+    }
+
+    // Add connecting lines between steps on larger screens
+    @media (min-width: $breakpoint-lg) {
+      .step {
+        position: relative;
+
+        &:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          right: -#{$spacing-2xl / 2};
+          width: $spacing-2xl;
+          height: 2px;
+          background: linear-gradient(90deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.1));
+          transform: translateY(-50%);
+          z-index: -1;
+        }
+      }
+    }
+  }
+
+  // Floating elements animation
+  &::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 8%;
+    width: 20px;
+    height: 20px;
+    background: $mint-green;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: float 10s ease-in-out infinite;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 20%;
+    right: 12%;
+    width: 15px;
+    height: 15px;
+    background: $sage-green;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: float 8s ease-in-out infinite reverse;
+  }
+}
+
+// Animations
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-15px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(-8px) rotate(240deg);
+  }
+}
+
+// Staggered animation for steps
+.how-it-works .steps .step {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+
+  &:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  &:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  &:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .how-it-works {
+    background: $charcoal;
+    
+    .section-header {
+      h2 {
+        color: $pure-white;
+      }
+      
+      p {
+        color: $light-gray;
+      }
+    }
+    
+    .steps {
+      .step {
+        background: linear-gradient(135deg, $slate 0%, $soft-black 100%);
+        border-color: rgba(107, 114, 128, 0.2);
+        
+        h3 {
+          color: $pure-white;
+        }
+        
+        p {
+          color: $light-gray;
+        }
+        
+        .step-number {
+          background: linear-gradient(135deg, $primary-green, $accent-green);
+          color: $pure-white;
+        }
+      }
+    }
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .how-it-works {
+    &::before,
+    &::after {
+      animation: none;
+    }
+    
+    .steps .step {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      
+      &:hover {
+        transform: none;
+        
+        .icon-wrapper {
+          transform: none;
+        }
+        
+        .step-number {
+          transform: none;
+        }
+      }
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .how-it-works {
+    .steps {
+      .step {
+        border-width: 2px;
+        border-color: $primary-green;
+        
+        .icon-wrapper {
+          border: 2px solid $pure-white;
+        }
+      }
+    }
+  }
+}
+
+// Additional responsive adjustments for very small screens
+@media (max-width: 375px) {
+  .how-it-works {
+    .steps {
+      gap: $spacing-lg;
+      
+      .step {
+        padding: $spacing-md;
+        
+        .icon-wrapper {
+          width: 60px;
+          height: 60px;
+          
+          .step-icon {
+            width: 24px;
+            height: 24px;
+          }
+        }
+        
+        h3 {
+          font-size: 1.125rem;
+        }
       }
     }
   }

@@ -1,76 +1,464 @@
-@import 'variables';
+// Color Variables - Elegant Green, Black & White Palette
+$primary-green: #32d81c;
+$secondary-green: #1ca527;
+$accent-green: #34d399;
+$sage-green: #50a357;
+$mint-green: #a7f3d0;
+
+$charcoal: #111111;
+$slate: #313336;
+$soft-black: #111827;
+$warm-gray: #0c0c0c;
+$light-gray: #d1d5db;
+
+$pure-white: #ffffff;
+$off-white: #fafafa;
+$cream: #f9fafb;
+$light-cream: #f3f4f6;
+
+// Typography
+$font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Spacing
+$spacing-xs: 0.5rem;
+$spacing-sm: 0.75rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 3rem;
+$spacing-3xl: 4rem;
+$spacing-4xl: 5rem;
+$spacing-5xl: 6rem;
+
+// Border Radius
+$radius-sm: 0.375rem;
+$radius-md: 0.5rem;
+$radius-lg: 0.75rem;
+$radius-xl: 1rem;
+
+// Shadows
+$shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+$shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+$shadow-large: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+$shadow-green: 0 4px 14px rgba(16, 185, 129, 0.2);
+
+$transition-fast: 0.15s ease-in-out;
+$transition-medium: 0.3s ease-in-out;
+$transition-slow: 0.5s ease-in-out;
+
+// Mobile-first breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
 
 .hero {
-  background-color: $background-color;
-  padding: $spacing-unit * 8 0;
-  text-align: center;
+  // Mobile styles (base)
+  min-height: 100vh;
+  background: linear-gradient(135deg, $cream 0%, $off-white 50%, $light-cream 100%);
+  padding: $spacing-2xl 0 $spacing-3xl 0; // More top padding for mobile to clear navbar
+  position: relative;
+  overflow: hidden;
+  
+  // Ensure proper spacing from navbar on mobile
+  padding-top: calc(60px + #{$spacing-xl}); // Assuming navbar height ~60px
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at 25% 25%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+                      radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+  }
 
   .hero-container {
-    max-width: 800px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 0 $spacing-unit * 2;
+    padding: 0 $spacing-md; // Mobile padding
+    position: relative;
+    z-index: 1;
   }
 
-  .hero-title {
-    font-size: 3.5rem;
-    font-weight: $heading-font-weight;
-    color: $primary-color;
-    margin-bottom: $spacing-unit * 2;
-    line-height: 1.2;
+  .hero-grid {
+    // Mobile layout (single column)
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2xl;
+    align-items: center;
+    min-height: calc(100vh - 120px); // Account for navbar and padding
+    justify-content: center;
 
-    span {
-      color: $secondary-color;
+    .hero-content {
+      order: 1;
+      text-align: center; // Center content on mobile
+    }
+
+    .hero-visual {
+      order: 2;
     }
   }
 
-  .hero-subtitle {
-    font-size: 1.25rem;
-    color: $text-color;
-    margin-bottom: $spacing-unit * 3;
-    line-height: 1.6;
-  }
-
-  .hero-actions {
+  .hero-content {
     display: flex;
-    justify-content: center;
-    gap: $spacing-unit * 2;
+    flex-direction: column;
+    gap: $spacing-lg; // Smaller gap on mobile
+    width: 100%;
+    max-width: 600px;
 
-    .upload-btn,
-    .try-btn {
-      padding: $spacing-unit * 1.5 $spacing-unit * 3;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
+    .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: $spacing-unit;
-    }
-
-    .upload-btn {
-      background-color: $secondary-color;
-      color: #fff;
+      justify-content: center;
+      gap: $spacing-sm;
+      background: linear-gradient(135deg, $primary-green, $accent-green);
+      color: $pure-white;
+      padding: $spacing-sm $spacing-lg;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: $font-weight-medium;
+      width: fit-content;
+      box-shadow: $shadow-green;
+      transition: all $transition-medium;
+      padding-top: 12px;
+      margin: 0 auto; // Center on mobile
 
       &:hover {
-        background-color: darken($secondary-color, 10%);
         transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+      }
+
+      .sparkles-icon {
+        width: 18px;
+        height: 18px;
+        animation: sparkle 2s ease-in-out infinite;
+      }
+
+      .badge-text {
+        font-family: $font-primary;
+        letter-spacing: 0.025em;
       }
     }
 
-    .try-btn {
-      background-color: transparent;
-      color: $secondary-color;
-      border: 2px solid $secondary-color;
+    .hero-title {
+      font-size: 2.25rem; // Fixed mobile size
+      font-weight: $font-weight-bold;
+      color: $charcoal;
+      line-height: 1.1;
+      font-family: $font-primary;
+      margin: 0;
 
-      &:hover {
-        background-color: $secondary-color;
-        color: #fff;
+      .accent-text {
+        background: linear-gradient(135deg, $primary-green, $secondary-green);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background: linear-gradient(135deg, $primary-green, $accent-green);
+          border-radius: 2px;
+          opacity: 0.3;
+        }
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem; // Mobile size
+      color: $warm-gray;
+      line-height: 1.6;
+      font-weight: $font-weight-regular;
+      margin: 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm; // Reduced gap
+      align-items: center;
+      width: 100%;
+
+      .upload-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-sm;
+        background: linear-gradient(135deg, $primary-green, $secondary-green);
+        color: $pure-white;
+        border: none;
+        padding: $spacing-sm $spacing-lg; // Reduced padding for mobile
+        border-radius: $radius-xl;
+        font-size: 1rem; // Slightly smaller font
+        font-weight: $font-weight-semibold;
+        cursor: pointer;
+        transition: all $transition-medium;
+        box-shadow: $shadow-green;
+        position: relative;
+        overflow: hidden;
+        width: auto; // Remove full width
+        min-width: 200px; // Reasonable minimum
+        max-width: 280px; // Prevent oversizing
+        min-height: 44px; // Touch-friendly but smaller
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .upload-icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      // New reassurance text instead of fake button
+      .reassurance-text {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        font-size: 0.875rem;
+        color: $warm-gray;
+        font-weight: $font-weight-medium;
+        margin-top: $spacing-xs;
+
+        .check-icon {
+          width: 14px;
+          height: 14px;
+          color: $primary-green;
+          flex-shrink: 0;
+        }
+
+        .text {
+          line-height: 1.4;
+        }
+      }
+    }
+
+    .hero-features {
+      display: flex;
+      flex-direction: row; // Horizontal on mobile
+      gap: $spacing-lg;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap; // Allow wrapping if needed
+
+      .feature {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        font-size: 0.95rem;
+        color: $warm-gray;
+        font-weight: $font-weight-medium;
+
+        .feature-dot {
+          width: 8px;
+          height: 8px;
+          background: $primary-green;
+          border-radius: 50%;
+          box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
       }
     }
   }
 
-  .hero-note {
-    margin-top: $spacing-unit * 2;
-    color: $dark-gray;
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+
+    .illustration-container {
+      width: 100%;
+      max-width: 400px; // Smaller on mobile
+      position: relative;
+      filter: drop-shadow(0 10px 30px rgba(16, 185, 129, 0.1));
+
+      .office-illustration {
+        width: 100%;
+        height: auto;
+        border-radius: $radius-lg;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform $transition-slow;
+
+        &:hover {
+          transform: scale(1.02);
+        }
+      }
+    }
+  }
+
+  // Tablet styles
+  @media (min-width: $breakpoint-sm) {
+    padding-top: calc(60px + #{$spacing-2xl}); // More top padding on larger screens
+
+    .hero-container {
+      padding: 0 $spacing-lg;
+    }
+
+    .hero-grid {
+      gap: $spacing-3xl;
+    }
+
+    .hero-content {
+      gap: $spacing-xl;
+
+      .hero-title {
+        font-size: 3rem; // Larger on tablet
+      }
+
+      .hero-subtitle {
+        font-size: 1.25rem;
+      }
+
+      .hero-actions {
+        gap: $spacing-md;
+
+        .upload-btn {
+          padding: $spacing-md $spacing-xl; // More generous padding on tablet
+          font-size: 1.1rem;
+          min-width: 220px;
+          max-width: 320px;
+          min-height: 48px;
+        }
+
+        .reassurance-text {
+          font-size: 0.95rem;
+          margin-top: $spacing-sm;
+        }
+      }
+
+      .hero-features {
+        flex-direction: row; // Already horizontal from mobile
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: $spacing-lg;
+      }
+    }
+
+    .hero-visual .illustration-container {
+      max-width: 500px; // Larger on tablet
+    }
+  }
+
+  // Desktop styles
+  @media (min-width: $breakpoint-lg) {
+    padding-top: $spacing-4xl; // More generous top padding on desktop
+    padding-bottom: $spacing-4xl;
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: $spacing-4xl;
+      align-items: center;
+      min-height: calc(100vh - 120px);
+
+      .hero-content {
+        order: 0;
+        text-align: left; // Left align on desktop
+        max-width: none;
+      }
+
+      .hero-visual {
+        order: 0;
+      }
+    }
+
+    .hero-content {
+      .hero-badge {
+        margin: 0; // Remove centering on desktop
+      }
+
+      .hero-title {
+        font-size: clamp(3rem, 4vw, 3.75rem); // Responsive size
+      }
+
+      .hero-actions {
+        justify-content: flex-start; // Left align on desktop
+        align-items: flex-start;
+
+        .upload-btn {
+          width: auto;
+          min-width: 240px;
+          max-width: none; // Remove max-width restriction on desktop
+        }
+      }
+
+      .hero-features {
+        justify-content: flex-start; // Left align on desktop
+      }
+    }
+
+    .hero-visual .illustration-container {
+      max-width: 600px; // Full size on desktop
+    }
+  }
+
+  // Large desktop styles
+  @media (min-width: $breakpoint-xl) {
+    padding-top: $spacing-5xl; // Maximum top padding on large screens
+
+    .hero-grid {
+      gap: $spacing-5xl;
+    }
+
+    .hero-content .hero-title {
+      font-size: clamp(3.5rem, 5vw, 4rem); // Even larger on xl screens
+    }
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: rotate(180deg) scale(1.1); opacity: 0.8; }
+}
+
+.text-gradient-green {
+  background: linear-gradient(135deg, $primary-green, $secondary-green);
+ 
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Dark mode (optional)
+@media (prefers-color-scheme: dark) {
+  .hero {
+    background: linear-gradient(135deg, $soft-black 0%, $charcoal 50%, $slate 100%);
+
+    .hero-content {
+      .hero-title { color: $pure-white; }
+      .hero-subtitle { color: $light-gray; }
+      
+      .hero-actions {
+        .reassurance-text {
+          color: $light-gray;
+        }
+      }
+      
+      .hero-features .feature { color: $light-gray; }
+    }
+
+    .hero-visual .illustration-container .office-illustration {
+      background: rgba(31, 41, 55, 0.8);
+      border: 1px solid rgba(107, 114, 128, 0.2);
+    }
   }
 }
