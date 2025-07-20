@@ -3,7 +3,7 @@
 $primary-green: #10b943;      // Emerald green
 $secondary-green: #1ca527;    // Deeper emerald
 $accent-green: #34d399;       // Light emerald
-$sage-green: #6ee7b7;         // Soft sage
+$sage-green: #36b32b;         // Soft sage
 $mint-green: #a7f3d0;         // Very light mint
 
 $charcoal: #111111;           // Deep charcoal
@@ -286,26 +286,6 @@ $breakpoint-xl: 1280px;
   }
 }
 
-// Dark mode support
-@media (prefers-color-scheme: dark) {
-  .call-to-action {
-    background: linear-gradient(135deg, $soft-black 0%, $charcoal 50%, $slate 100%);
-    
-    h2 {
-      color: $pure-white;
-    }
-    
-    p {
-      color: $light-gray;
-    }
-    
-    .actions {
-      .note {
-        color: $light-gray;
-      }
-    }
-  }
-}
 
 // Additional responsive adjustments
 @media (max-width: $breakpoint-sm) {

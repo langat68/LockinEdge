@@ -383,70 +383,7 @@ $breakpoint-xl: 1280px;
   }
 }
 
-// Dark mode support
-@media (prefers-color-scheme: dark) {
-  .how-it-works {
-    background: $charcoal;
-    
-    .section-header {
-      h2 {
-        color: $pure-white;
-      }
-      
-      p {
-        color: $light-gray;
-      }
-    }
-    
-    .steps {
-      .step {
-        background: linear-gradient(135deg, $slate 0%, $soft-black 100%);
-        border-color: rgba(107, 114, 128, 0.2);
-        
-        h3 {
-          color: $pure-white;
-        }
-        
-        p {
-          color: $light-gray;
-        }
-        
-        .step-number {
-          background: linear-gradient(135deg, $primary-green, $accent-green);
-          color: $pure-white;
-        }
-      }
-    }
-  }
-}
 
-// Accessibility improvements
-@media (prefers-reduced-motion: reduce) {
-  .how-it-works {
-    &::before,
-    &::after {
-      animation: none;
-    }
-    
-    .steps .step {
-      animation: none;
-      opacity: 1;
-      transform: none;
-      
-      &:hover {
-        transform: none;
-        
-        .icon-wrapper {
-          transform: none;
-        }
-        
-        .step-number {
-          transform: none;
-        }
-      }
-    }
-  }
-}
 
 // High contrast mode
 @media (prefers-contrast: high) {

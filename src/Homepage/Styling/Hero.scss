@@ -437,28 +437,3 @@ $breakpoint-xl: 1280px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
-
-// Dark mode (optional)
-@media (prefers-color-scheme: dark) {
-  .hero {
-    background: linear-gradient(135deg, $soft-black 0%, $charcoal 50%, $slate 100%);
-
-    .hero-content {
-      .hero-title { color: $pure-white; }
-      .hero-subtitle { color: $light-gray; }
-      
-      .hero-actions {
-        .reassurance-text {
-          color: $light-gray;
-        }
-      }
-      
-      .hero-features .feature { color: $light-gray; }
-    }
-
-    .hero-visual .illustration-container .office-illustration {
-      background: rgba(31, 41, 55, 0.8);
-      border: 1px solid rgba(107, 114, 128, 0.2);
-    }
-  }
-}
