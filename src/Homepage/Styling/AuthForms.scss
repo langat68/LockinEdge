@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // Color palette
 $primary-color: #4caf50;
 $primary-hover: #43a047;
@@ -50,9 +52,8 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  
+
   .auth-form {
-    // Reset margins when inside container
     margin: 0;
   }
 }
@@ -67,17 +68,13 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
   box-shadow: 0 8px 32px $shadow-light;
   animation: slideIn 0.6s ease-out;
   position: relative;
-  
-  // Self-centering styles when not inside .auth-container
   margin: 2rem auto;
-  
-  // If the form takes up the full viewport height context
+
   @supports (min-height: 100vh) {
     margin-top: max(2rem, calc(50vh - 250px));
     margin-bottom: 2rem;
   }
-  
-  // Subtle top accent
+
   &::before {
     content: '';
     position: absolute;
@@ -89,7 +86,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     border-radius: 16px 16px 0 0;
   }
 
-  // Form title (h2)
   h2 {
     text-align: center;
     font-size: 2rem;
@@ -99,7 +95,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     letter-spacing: -0.02em;
   }
 
-  // Form groups
   .form-group {
     margin-bottom: 1.5rem;
     position: relative;
@@ -141,13 +136,13 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
         }
 
         &:hover:not(:focus):not(:disabled) {
-          border-color: darken($border-color, 10%);
+          border-color: color.adjust($border-color, $lightness: -10%);
         }
 
         &.error {
           border-color: $error-color;
           animation: shake 0.4s ease-in-out;
-          
+
           &:focus {
             box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
           }
@@ -160,12 +155,10 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
           opacity: 0.7;
         }
 
-        // Invalid state styling
         &:invalid {
           border-color: $error-color;
         }
 
-        // Password field with toggle
         &[type="password"],
         &[type="text"].password-input {
           padding-right: 2.75rem;
@@ -204,7 +197,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
           opacity: 0.5;
         }
 
-        // Icon styling
         svg {
           width: 18px;
           height: 18px;
@@ -212,7 +204,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
       }
     }
 
-    // For inputs without wrapper (backwards compatibility)
     > input:not(.input-wrapper input) {
       width: 100%;
       padding: 0.875rem 1rem;
@@ -236,13 +227,13 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
       }
 
       &:hover:not(:focus):not(:disabled) {
-        border-color: darken($border-color, 10%);
+        border-color: color.adjust($border-color, $lightness: -10%);
       }
 
       &.error {
         border-color: $error-color;
         animation: shake 0.4s ease-in-out;
-        
+
         &:focus {
           box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
         }
@@ -270,7 +261,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     }
   }
 
-  // Messages (for success/error feedback)
   .message {
     display: flex;
     align-items: center;
@@ -295,7 +285,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     }
   }
 
-  // Submit button
   .submit-btn {
     width: 100%;
     padding: 0.875rem 1.5rem;
@@ -368,13 +357,12 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     }
   }
 
-  // Switch form text and link
   .switch-form {
     text-align: center;
     margin: 0;
     color: $text-secondary;
     font-size: 0.95rem;
-    
+
     a {
       color: $primary-color;
       text-decoration: none;
@@ -395,7 +383,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     }
   }
 
-  // Additional form options (for future use - remember me, forgot password, etc.)
   .form-options {
     display: flex;
     justify-content: space-between;
@@ -474,7 +461,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
   }
 }
 
-// Responsive design
 @media (max-width: 480px) {
   .auth-container {
     padding: 0.5rem;
@@ -496,7 +482,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
   }
 }
 
-// High contrast mode support
 @media (prefers-contrast: high) {
   .auth-form {
     border: 2px solid $text-color;
@@ -511,7 +496,6 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
   }
 }
 
-// Reduced motion support
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
