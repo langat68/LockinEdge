@@ -35,7 +35,7 @@ const JobRecommendations: React.FC<JobRecommendationsProps> = ({ resumeId }) => 
     setError("");
 
     try {
-      const response = await fetch(`http://localhost:3000/resume/${resumeId}/recommendations/generate`, {
+      const response = await fetch(`https://lockinedge-backend-8.onrender.com/resume/${resumeId}/recommendations/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
