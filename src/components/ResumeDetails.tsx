@@ -22,7 +22,7 @@ const ResumeDetails: React.FC = () => {
     if (!resumeId) return;
 
     const fetchResume = async () => {
-      const res = await fetch(`http://localhost:3000/resume/${resumeId}`);
+      const res = await fetch(`https://lockinedge-backend-8.onrender.com/resume/${resumeId}`);
       const data = await res.json();
       if (data.success) {
         setAnalysis(data.data.analysis);
