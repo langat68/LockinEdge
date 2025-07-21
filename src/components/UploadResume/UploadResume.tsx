@@ -50,7 +50,7 @@ const UploadResume: React.FC = () => {
       formData.append('userId', user.id);
 
       try {
-        const response = await fetch('http://localhost:3000/resume', {
+        const response = await fetch('https://lockinedge-backend-8.onrender.com/resume', {
           method: 'POST',
           body: formData,
         });
