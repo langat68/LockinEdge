@@ -33,7 +33,7 @@ const ResumeDetails: React.FC = () => {
   }, [resumeId]);
 
   const handleSave = async () => {
-    const res = await fetch(`http://localhost:3000/resume/${resumeId}`, {
+    const res = await fetch(`https://lockinedge-backend-8.onrender.com/resume/${resumeId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ analysis: edited }),
@@ -49,7 +49,7 @@ const ResumeDetails: React.FC = () => {
   };
 
   const handleDownload = () => {
-    window.open(`http://localhost:3000/resume/${resumeId}/download`, "_blank");
+    window.open(`https://lockinedge-backend-8.onrender.com/resume/${resumeId}/download`, "_blank");
   };
 
   if (!resumeId) return <p>Invalid resume ID</p>;
