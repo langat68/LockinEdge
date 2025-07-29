@@ -86,7 +86,7 @@ const LoginForm = () => {
     setError("");
 
     try {
-      const backendResponse = await fetch('http://localhost:3000/auth/auth/google', {
+      const backendResponse = await fetch('https://lockinedge-backend-8.onrender.com/auth/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ const LoginForm = () => {
     setError("");
 
     try {
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch('https://lockinedge-backend-8.onrender.com/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
