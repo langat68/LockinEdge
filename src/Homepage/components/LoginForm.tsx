@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../Styling/AuthForms.scss";
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../../Redux/slices/authSlice';
+
+// Google Sign-In types
+declare global {
+  interface Window {
+    google: any;
+    handleGoogleSignIn: (response: any) => void;
+  }
+}
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -12,9 +20,103 @@ const LoginForm = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [googleLoading, setGoogleLoading] = useState(false);
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Replace with your actual Google Client ID
+  const GOOGLE_CLIENT_ID = "802590327760-0nt29rm0d3rttv4j6eh8atb9kvoqeifg.apps.googleusercontent.com";
+
+  useEffect(() => {
+    // Load Google Sign-In script
+    const loadGoogleScript = () => {
+      if (window.google) {
+        initializeGoogleSignIn();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeGoogleSignIn;
+      document.head.appendChild(script);
+    };
+
+    const initializeGoogleSignIn = () => {
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleResponse,
+          auto_select: false,
+          cancel_on_tap_outside: true,
+        });
+
+        // Render the Google Sign-In button
+        window.google.accounts.id.renderButton(
+          document.getElementById("google-signin-button"),
+          {
+            theme: "outline",
+            size: "large",
+            width: 250,
+            text: "signin_with",
+            shape: "rectangular",
+          }
+        );
+
+        // Optional: Enable One Tap
+        // window.google.accounts.id.prompt();
+      }
+    };
+
+    loadGoogleScript();
+
+    // Cleanup
+    return () => {
+      const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+      if (script) {
+        document.head.removeChild(script);
+      }
+    };
+  }, []);
+
+  const handleGoogleResponse = async (response: any) => {
+    setGoogleLoading(true);
+    setError("");
+
+    try {
+      const backendResponse = await fetch('http://localhost:3000/auth/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: response.credential,
+        }),
+      });
+
+      const data = await backendResponse.json();
+
+      if (backendResponse.ok && data.success) {
+        // Dispatch login action to Redux store
+        dispatch(setLogin({
+          token: data.data.token,
+          user: data.data.user
+        }));
+        
+        // Redirect to homepage
+        navigate('/');
+      } else {
+        setError(data.message || 'Google sign-in failed');
+      }
+    } catch (err) {
+      console.error('Google sign-in error:', err);
+      setError('Network error during Google sign-in. Please try again.');
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +124,7 @@ const LoginForm = () => {
     setError("");
 
     try {
-      const response = await fetch('https://lockinedge-backend-8.onrender.com/auth/login', {
+      const response = await fetch('http://localhost:3000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,8 +179,26 @@ const LoginForm = () => {
         )}
 
         {/* Google Sign-In Button */}
-        <div className="google-signin-container">
-          <div id="google-signin-button"></div>
+        <div className="google-signin-container" style={{ marginBottom: '20px' }}>
+          <div 
+            id="google-signin-button" 
+            style={{ 
+              display: 'flex', 
+              justifyContent: 'center',
+              opacity: googleLoading ? 0.6 : 1,
+              pointerEvents: googleLoading ? 'none' : 'auto'
+            }}
+          ></div>
+          {googleLoading && (
+            <div style={{ 
+              textAlign: 'center', 
+              marginTop: '10px', 
+              color: '#666',
+              fontSize: '14px'
+            }}>
+              Signing in with Google...
+            </div>
+          )}
         </div>
 
         {/* Divider */}
