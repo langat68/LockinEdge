@@ -5,6 +5,13 @@ import { useDispatch } from 'react-redux';
 import { setLogin } from '../../Redux/slices/authSlice';
 import { Eye, EyeOff, Mail, Lock, AlertCircle, CheckCircle } from 'lucide-react';
 
+// Google Sign-In types
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,9 +22,13 @@ const LoginForm = () => {
   const [success, setSuccess] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Google Client ID
+  const GOOGLE_CLIENT_ID = '802590327760-0nt29rm0d3rttv4j6eh8atb9kvoqeifg.apps.googleusercontent.com';
 
   // Auto-focus email input on component mount
   useEffect(() => {
@@ -26,6 +37,96 @@ const LoginForm = () => {
       emailInput.focus();
     }
   }, []);
+
+  // Load Google Sign-In script
+  useEffect(() => {
+    const loadGoogleScript = () => {
+      if (window.google) {
+        initializeGoogleSignIn();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeGoogleSignIn;
+      document.head.appendChild(script);
+    };
+
+    const initializeGoogleSignIn = () => {
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleResponse,
+        });
+
+        window.google.accounts.id.renderButton(
+          document.getElementById('google-signin-button'),
+          {
+            theme: 'outline',
+            size: 'large',
+            text: 'signin_with',
+            width: '100%',
+          }
+        );
+      }
+    };
+
+    loadGoogleScript();
+  }, []);
+
+  // Handle Google credential response
+  const handleGoogleResponse = async (response: any) => {
+    setIsGoogleLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const googleResponse = await fetch('https://lockinedge-backend-8.onrender.com/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: response.credential
+        }),
+      });
+
+      const result = await googleResponse.json();
+
+      if (!googleResponse.ok) {
+        throw new Error(result.message || `HTTP error! status: ${googleResponse.status}`);
+      }
+
+      if (result.success) {
+        const token = result.data.token;
+        const user = result.data.user;
+
+        // Dispatch login action
+        dispatch(setLogin({ token, user }));
+
+        setSuccess("Google sign-in successful! Redirecting...");
+        
+        // Delay navigation for better UX
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
+      } else {
+        throw new Error(result.message || 'Google authentication failed');
+      }
+
+    } catch (error) {
+      console.error("Google sign-in failed:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Google sign-in failed. Please try again.");
+      }
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
 
   // Email validation
   const validateEmail = (email: string) => {
@@ -158,6 +259,22 @@ const LoginForm = () => {
           </div>
         )}
 
+        {/* Google Sign-In Button */}
+        <div className="google-signin-container">
+          <div id="google-signin-button" className={isGoogleLoading ? 'loading' : ''}></div>
+          {isGoogleLoading && (
+            <div className="google-loading-overlay">
+              <div className="loading-spinner"></div>
+              <span>Signing in with Google...</span>
+            </div>
+          )}
+        </div>
+
+        {/* Divider */}
+        <div className="divider">
+          <span>or</span>
+        </div>
+
         {/* Email Field */}
         <div className="form-group">
           <label htmlFor="email">Email Address</label>
@@ -173,7 +290,7 @@ const LoginForm = () => {
               className={emailError ? 'error' : ''}
               aria-invalid={!!emailError}
               aria-describedby={emailError ? 'email-error' : undefined}
-              disabled={isLoading}
+              disabled={isLoading || isGoogleLoading}
             />
           </div>
           {emailError && (
@@ -198,14 +315,14 @@ const LoginForm = () => {
               className={passwordError ? 'error' : ''}
               aria-invalid={!!passwordError}
               aria-describedby={passwordError ? 'password-error' : undefined}
-              disabled={isLoading}
+              disabled={isLoading || isGoogleLoading}
             />
             <button
               type="button"
               className="password-toggle"
               onClick={() => setShowPassword(!showPassword)}
               aria-label={showPassword ? "Hide password" : "Show password"}
-              disabled={isLoading}
+              disabled={isLoading || isGoogleLoading}
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -224,7 +341,7 @@ const LoginForm = () => {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              disabled={isLoading}
+              disabled={isLoading || isGoogleLoading}
             />
             <span className="checkmark"></span>
             Remember me
@@ -238,7 +355,7 @@ const LoginForm = () => {
         <button 
           type="submit" 
           className="submit-btn" 
-          disabled={isLoading || !!emailError || !!passwordError}
+          disabled={isLoading || isGoogleLoading || !!emailError || !!passwordError}
           aria-describedby={isLoading ? 'loading-status' : undefined}
         >
           {isLoading ? (
