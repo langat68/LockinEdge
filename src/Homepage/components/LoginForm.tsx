@@ -27,7 +27,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Google Client ID
+  // Google Client ID - Make sure this is correct for your domain
   const GOOGLE_CLIENT_ID = '802590327760-0nt29rm0d3rttv4j6eh8atb9kvoqeifg.apps.googleusercontent.com';
 
   // Auto-focus email input on component mount
@@ -38,44 +38,6 @@ const LoginForm = () => {
     }
   }, []);
 
-  // Load Google Sign-In script
-  useEffect(() => {
-    const loadGoogleScript = () => {
-      if (window.google) {
-        initializeGoogleSignIn();
-        return;
-      }
-
-      const script = document.createElement('script');
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      script.onload = initializeGoogleSignIn;
-      document.head.appendChild(script);
-    };
-
-    const initializeGoogleSignIn = () => {
-      if (window.google) {
-        window.google.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: handleGoogleResponse,
-        });
-
-        window.google.accounts.id.renderButton(
-          document.getElementById('google-signin-button'),
-          {
-            theme: 'outline',
-            size: 'large',
-            text: 'signin_with',
-            width: '100%',
-          }
-        );
-      }
-    };
-
-    loadGoogleScript();
-  }, []);
-
   // Handle Google credential response
   const handleGoogleResponse = async (response: any) => {
     setIsGoogleLoading(true);
@@ -83,6 +45,10 @@ const LoginForm = () => {
     setSuccess("");
 
     try {
+      if (!response.credential) {
+        throw new Error('No credential received from Google');
+      }
+
       const googleResponse = await fetch('https://lockinedge-backend-8.onrender.com/auth/google', {
         method: 'POST',
         headers: {
@@ -127,6 +93,50 @@ const LoginForm = () => {
       setIsGoogleLoading(false);
     }
   };
+
+  // Load Google Sign-In script
+  useEffect(() => {
+    const loadGoogleScript = () => {
+      if (window.google) {
+        initializeGoogleSignIn();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeGoogleSignIn;
+      document.head.appendChild(script);
+    };
+
+    const initializeGoogleSignIn = () => {
+      if (window.google && window.google.accounts) {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleResponse,
+          auto_select: false,
+          cancel_on_tap_outside: true,
+        });
+
+        const buttonContainer = document.getElementById('google-signin-button');
+        if (buttonContainer) {
+          window.google.accounts.id.renderButton(
+            buttonContainer,
+            {
+              theme: 'outline',
+              size: 'large',
+              text: 'signin_with',
+              width: 350,
+              logo_alignment: 'left',
+            }
+          );
+        }
+      }
+    };
+
+    loadGoogleScript();
+  }, []);
 
   // Email validation
   const validateEmail = (email: string) => {
@@ -260,7 +270,7 @@ const LoginForm = () => {
         )}
 
         {/* Google Sign-In Button */}
-        <div className="google-signin-container">
+        <div className="google-signin-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
           <div id="google-signin-button" className={isGoogleLoading ? 'loading' : ''}></div>
           {isGoogleLoading && (
             <div className="google-loading-overlay">
