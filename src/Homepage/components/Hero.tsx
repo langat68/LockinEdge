@@ -35,15 +35,7 @@ const HeroSection = () => {
       }
     }
 
-    // Method 2: Check for session cookie (uncomment if using cookies)
-    // const sessionCookie = document.cookie
-    //   .split('; ')
-    //   .find(row => row.startsWith('session='));
-    // return !!sessionCookie;
-
-    // Method 3: Check sessionStorage
-    // const sessionData = sessionStorage.getItem('userSession');
-    // return !!sessionData;
+  
 
     return false;
   };
