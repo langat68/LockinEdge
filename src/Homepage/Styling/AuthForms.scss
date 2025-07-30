@@ -15,6 +15,8 @@ $background-color: #f8fafc;
 $white: #ffffff;
 $shadow-light: rgba(0, 0, 0, 0.1);
 $shadow-medium: rgba(0, 0, 0, 0.15);
+$google-blue: #4285f4;
+$google-hover: #357ae8;
 
 // Animations
 @keyframes slideIn {
@@ -42,6 +44,11 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 // Main container - provides full-page centering and gradient background
@@ -86,6 +93,28 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     border-radius: 16px 16px 0 0;
   }
 
+  // Form header styles
+  .form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $text-color;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: -0.02em;
+    }
+
+    .form-subtitle {
+      font-size: 1rem;
+      color: $text-secondary;
+      margin: 0;
+      font-weight: 400;
+    }
+  }
+
+  // Legacy h2 support (if form-header is not used)
   h2 {
     text-align: center;
     font-size: 2rem;
@@ -93,6 +122,171 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     color: $text-color;
     margin: 0 0 2rem 0;
     letter-spacing: -0.02em;
+  }
+
+  // Google Sign-In Container
+  .google-signin-container {
+    margin-bottom: 1.5rem;
+    
+    #google-signin-button {
+      display: flex;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+      
+      // Custom styling for Google button when needed
+      > div {
+        width: 100% !important;
+        max-width: 250px;
+      }
+    }
+
+    // Loading state for Google sign-in
+    &.loading {
+      #google-signin-button {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+    }
+  }
+
+  // Divider between Google sign-in and form
+  .divider {
+    position: relative;
+    margin: 1.5rem 0;
+    text-align: center;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: $border-color;
+      z-index: 1;
+    }
+    
+    span {
+      background: $white;
+      padding: 0 1rem;
+      color: $text-secondary;
+      font-size: 0.9rem;
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  // Input icons styling
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      color: $text-secondary;
+      z-index: 2;
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 2.75rem; // Left padding for icon
+      border: 2px solid $border-color;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: $white;
+      transition: all 0.2s ease;
+      font-weight: 400;
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: #a0a0a0;
+        font-weight: 400;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        
+        + .input-icon,
+        ~ .input-icon {
+          color: $primary-color;
+        }
+      }
+
+      &:hover:not(:focus):not(:disabled) {
+        border-color: color.adjust($border-color, $lightness: -10%);
+      }
+
+      &.error {
+        border-color: $error-color;
+        animation: shake 0.4s ease-in-out;
+
+        &:focus {
+          box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+      }
+
+      &:disabled {
+        background: #f5f5f5;
+        color: $text-secondary;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      &:invalid {
+        border-color: $error-color;
+      }
+
+      // Password field with both icon and toggle
+      &[type="password"],
+      &[type="text"].password-input {
+        padding-right: 2.75rem; // Right padding for toggle button
+      }
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: $text-secondary;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      z-index: 3;
+
+      &:hover:not(:disabled) {
+        color: $primary-color;
+        background: rgba(76, 175, 80, 0.1);
+      }
+
+      &:focus {
+        outline: 2px solid $primary-color;
+        outline-offset: 1px;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
   }
 
   .form-group {
@@ -108,102 +302,7 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
       letter-spacing: 0.01em;
     }
 
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-
-      input {
-        width: 100%;
-        padding: 0.875rem 1rem;
-        border: 2px solid $border-color;
-        border-radius: 10px;
-        font-size: 1rem;
-        background: $white;
-        transition: all 0.2s ease;
-        font-weight: 400;
-        box-sizing: border-box;
-
-        &::placeholder {
-          color: #a0a0a0;
-          font-weight: 400;
-        }
-
-        &:focus {
-          outline: none;
-          border-color: $primary-color;
-          box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-        }
-
-        &:hover:not(:focus):not(:disabled) {
-          border-color: color.adjust($border-color, $lightness: -10%);
-        }
-
-        &.error {
-          border-color: $error-color;
-          animation: shake 0.4s ease-in-out;
-
-          &:focus {
-            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
-          }
-        }
-
-        &:disabled {
-          background: #f5f5f5;
-          color: $text-secondary;
-          cursor: not-allowed;
-          opacity: 0.7;
-        }
-
-        &:invalid {
-          border-color: $error-color;
-        }
-
-        &[type="password"],
-        &[type="text"].password-input {
-          padding-right: 2.75rem;
-        }
-      }
-
-      .password-toggle {
-        position: absolute;
-        right: 12px;
-        background: none;
-        border: none;
-        color: $text-secondary;
-        cursor: pointer;
-        padding: 4px;
-        border-radius: 4px;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        z-index: 2;
-
-        &:hover:not(:disabled) {
-          color: $primary-color;
-          background: rgba(76, 175, 80, 0.1);
-        }
-
-        &:focus {
-          outline: 2px solid $primary-color;
-          outline-offset: 1px;
-        }
-
-        &:disabled {
-          cursor: not-allowed;
-          opacity: 0.5;
-        }
-
-        svg {
-          width: 18px;
-          height: 18px;
-        }
-      }
-    }
-
+    // Fallback for inputs without input-wrapper
     > input:not(.input-wrapper input) {
       width: 100%;
       padding: 0.875rem 1rem;
@@ -261,7 +360,10 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     }
   }
 
-  .message {
+  // Error and success messages
+  .message,
+  .error-message,
+  .success-message {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -271,18 +373,18 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     font-weight: 500;
     margin-bottom: 1.5rem;
     animation: fadeIn 0.3s ease-in;
+  }
 
-    &.error-message {
-      background: $error-light;
-      color: $error-color;
-      border: 1px solid rgba(231, 76, 60, 0.2);
-    }
+  .error-message {
+    background: $error-light;
+    color: $error-color;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+  }
 
-    &.success-message {
-      background: $success-light;
-      color: $success-color;
-      border: 1px solid rgba(39, 174, 96, 0.2);
-    }
+  .success-message {
+    background: $success-light;
+    color: $success-color;
+    border: 1px solid rgba(39, 174, 96, 0.2);
   }
 
   .submit-btn {
@@ -363,6 +465,26 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     color: $text-secondary;
     font-size: 0.95rem;
 
+    .switch-link {
+      color: $primary-color;
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 0.25rem;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $primary-hover;
+        text-decoration: underline;
+      }
+
+      &:focus {
+        outline: 2px solid $primary-color;
+        outline-offset: 2px;
+        border-radius: 2px;
+      }
+    }
+
+    // Legacy support for direct anchor tags
     a {
       color: $primary-color;
       text-decoration: none;
@@ -461,6 +583,16 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
   }
 }
 
+// Loading states
+.google-signin-loading {
+  text-align: center;
+  margin-top: 10px;
+  color: $text-secondary;
+  font-size: 14px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+// Responsive design
 @media (max-width: 480px) {
   .auth-container {
     padding: 0.5rem;
@@ -470,6 +602,7 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     padding: 2rem 1.5rem;
     border-radius: 12px;
 
+    .form-header h2,
     h2 {
       font-size: 1.75rem;
     }
@@ -479,19 +612,31 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
       align-items: flex-start;
       gap: 0.75rem;
     }
+
+    .google-signin-container {
+      #google-signin-button > div {
+        max-width: 100% !important;
+      }
+    }
   }
 }
 
+// Accessibility improvements
 @media (prefers-contrast: high) {
   .auth-form {
     border: 2px solid $text-color;
 
-    .form-group input {
+    .form-group input,
+    .input-wrapper input {
       border-width: 2px;
     }
 
     .submit-btn {
       border: 2px solid $text-color;
+    }
+
+    .divider::before {
+      background: $text-color;
     }
   }
 }
@@ -501,5 +646,15 @@ $shadow-medium: rgba(0, 0, 0, 0.15);
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+// Focus management for better keyboard navigation
+.auth-form {
+  input, button, a {
+    &:focus-visible {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
   }
 }
