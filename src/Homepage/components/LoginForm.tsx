@@ -41,32 +41,42 @@ const LoginForm = () => {
       script.async = true;
       script.defer = true;
       script.onload = initializeGoogleSignIn;
+      script.onerror = () => {
+        console.error('Failed to load Google Sign-In script');
+        setError('Failed to load Google Sign-In. Please refresh the page.');
+      };
       document.head.appendChild(script);
     };
 
     const initializeGoogleSignIn = () => {
-      if (window.google) {
-        window.google.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: handleGoogleResponse,
-          auto_select: false,
-          cancel_on_tap_outside: true,
-        });
+      try {
+        if (window.google && window.google.accounts) {
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleResponse,
+            auto_select: false,
+            cancel_on_tap_outside: true,
+            use_fedcm_for_prompt: true, // Use FedCM API when available
+            itp_support: true, // Intelligent Tracking Prevention support
+            ux_mode: 'popup', // Use popup mode instead of iframe
+          });
 
-        // Render the Google Sign-In button
-        window.google.accounts.id.renderButton(
-          document.getElementById("google-signin-button"),
-          {
-            theme: "outline",
-            size: "large",
-            width: 250,
-            text: "signin_with",
-            shape: "rectangular",
+          // Render the Google Sign-In button
+          const buttonElement = document.getElementById("google-signin-button");
+          if (buttonElement) {
+            window.google.accounts.id.renderButton(buttonElement, {
+              theme: "outline",
+              size: "large",
+              width: 250,
+              text: "signin_with",
+              shape: "rectangular",
+              logo_alignment: "left",
+            });
           }
-        );
-
-        // Optional: Enable One Tap
-        // window.google.accounts.id.prompt();
+        }
+      } catch (error) {
+        console.error('Error initializing Google Sign-In:', error);
+        setError('Error initializing Google Sign-In');
       }
     };
 
@@ -75,8 +85,8 @@ const LoginForm = () => {
     // Cleanup
     return () => {
       const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
-      if (script) {
-        document.head.removeChild(script);
+      if (script && script.parentNode) {
+        script.parentNode.removeChild(script);
       }
     };
   }, []);
@@ -86,19 +96,26 @@ const LoginForm = () => {
     setError("");
 
     try {
+      // Updated endpoint to match your backend route structure
       const backendResponse = await fetch('https://lockinedge-backend-8.onrender.com/auth/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
+        credentials: 'include', // Include credentials for CORS
         body: JSON.stringify({
           token: response.credential,
         }),
       });
 
+      if (!backendResponse.ok) {
+        throw new Error(`HTTP error! status: ${backendResponse.status}`);
+      }
+
       const data = await backendResponse.json();
 
-      if (backendResponse.ok && data.success) {
+      if (data.success) {
         // Dispatch login action to Redux store
         dispatch(setLogin({
           token: data.data.token,
@@ -128,16 +145,22 @@ const LoginForm = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
+        credentials: 'include', // Include credentials for CORS
         body: JSON.stringify({
           email,
           password,
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
 
-      if (response.ok && data.success) {
+      if (data.success) {
         // Dispatch login action to Redux store
         dispatch(setLogin({
           token: data.data.token,
@@ -150,6 +173,7 @@ const LoginForm = () => {
         setError(data.message || 'Login failed');
       }
     } catch (err) {
+      console.error('Login error:', err);
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);
