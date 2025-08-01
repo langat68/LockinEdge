@@ -97,7 +97,7 @@ const LoginForm = () => {
 
     try {
       // Updated endpoint to match your backend route structure
-      const backendResponse = await fetch('https://lockinedge-backend-8.onrender.com/auth/google', {
+      const backendResponse = await fetch('http://localhost:3000/auth/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
