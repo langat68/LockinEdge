@@ -190,37 +190,18 @@ const LoginForm = () => {
 
         {/* Error Message */}
         {error && (
-          <div className="error-message" style={{ 
-            color: '#e74c3c', 
-            backgroundColor: '#fdf2f2', 
-            padding: '10px', 
-            borderRadius: '5px', 
-            marginBottom: '15px',
-            border: '1px solid #e74c3c'
-          }}>
+          <div className="error-message">
             {error}
           </div>
         )}
 
         {/* Google Sign-In Button */}
-        <div className="google-signin-container" style={{ marginBottom: '20px' }}>
-          <div 
-            id="google-signin-button" 
-            style={{ 
-              display: 'flex', 
-              justifyContent: 'center',
-              opacity: googleLoading ? 0.6 : 1,
-              pointerEvents: googleLoading ? 'none' : 'auto'
-            }}
-          ></div>
+        <div className={`google-signin-container ${googleLoading ? 'loading' : ''}`}>
+          <div id="google-signin-button"></div>
           {googleLoading && (
-            <div style={{ 
-              textAlign: 'center', 
-              marginTop: '10px', 
-              color: '#666',
-              fontSize: '14px'
-            }}>
-              Signing in with Google...
+            <div className="google-signin-loading">
+              <div className="loading-spinner"></div>
+              <span>Signing in with Google...</span>
             </div>
           )}
         </div>
@@ -241,6 +222,7 @@ const LoginForm = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
               required
             />
           </div>
@@ -257,12 +239,14 @@ const LoginForm = () => {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
               required
             />
             <button
               type="button"
               className="password-toggle"
               onClick={() => setShowPassword(!showPassword)}
+              disabled={loading}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -277,24 +261,40 @@ const LoginForm = () => {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
+              disabled={loading}
             />
             <span className="checkmark"></span>
             Remember me
           </label>
-          <Link to="/forgot-password" className="forgot-link">
+          <Link 
+            to="/forgot-password" 
+            className="forgot-link"
+            tabIndex={loading ? -1 : 0}
+          >
             Forgot password?
           </Link>
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="submit-btn" disabled={loading}>
-          {loading ? 'Signing In...' : 'Sign In'}
+        <button type="submit" className="submit-btn" disabled={loading || googleLoading}>
+          {loading ? (
+            <>
+              <div className="loading-spinner"></div>
+              <span>Signing In...</span>
+            </>
+          ) : (
+            'Sign In'
+          )}
         </button>
 
         {/* Switch to Register */}
         <p className="switch-form">
           Don't have an account? 
-          <Link to="/register" className="switch-link">
+          <Link 
+            to="/register" 
+            className="switch-link"
+            tabIndex={loading ? -1 : 0}
+          >
             Create one here
           </Link>
         </p>
